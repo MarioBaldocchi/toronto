@@ -1,17 +1,12 @@
-import pyspark
 from pyspark.sql import SparkSession, DataFrame
-import findspark
 import pyspark.sql.functions as f
 import json
+
 from .UrlToronto import UrlToronto
 
 
 class BikeToronto:
     def __init__(self, path_json):
-        self.spark = SparkSession.builder \
-            .appName("bike_toronto") \
-            .getOrCreate()
-
         self.parametros = BikeToronto.loadParameters(path_json)
 
     @staticmethod
@@ -33,7 +28,7 @@ class BikeToronto:
         urlToronto_obj = UrlToronto(self.parametros["temporal_path"])
         path_csv = urlToronto_obj.download_csv(year, month)
 
-        return self.spark.read.csv(
+        return spark.read.csv(
             path_csv, sep=",", header=True, inferSchema=True, nullValue="NULL"
         )
 
