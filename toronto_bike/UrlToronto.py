@@ -8,11 +8,11 @@ import io
 class UrlToronto:
     BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca"
 
-    def __init__(self, csv_name):
+    def __init__(self, ubicacion_temporal):
         """
         :param ubicacion_temporal: ubicacion donde se guardará el fichero CSV descomprimido
         """
-        self._temporal_path_ = f"/dbfs/Volumes/data/{csv_name}"
+        self._temporal_path_ = ubicacion_temporal
         self.valid_urls = UrlToronto.select_valid_urls()
 
     @staticmethod
