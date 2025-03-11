@@ -28,6 +28,7 @@ class BikeToronto:
         urlToronto_obj = UrlToronto(self.parametros["temporal_path"])
         path_csv = urlToronto_obj.download_csv(year, month)
 
+        spark = SparkSession.builder.appName("BikeToronto").getOrCreate()
         return spark.read.csv(
             path_csv, sep=",", header=True, inferSchema=True, nullValue="NULL"
         )

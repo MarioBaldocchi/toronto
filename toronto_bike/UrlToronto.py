@@ -4,7 +4,6 @@ import zipfile
 import os
 import io
 
-
 class UrlToronto:
     BASE_URL = "https://ckan0.cf.opendata.inter.prod-toronto.ca"
 
@@ -86,15 +85,13 @@ class UrlToronto:
             ]  # devuelve una lista unitaria con el fichero que nos interesa
 
             # Extraemos el contenido en una carpeta temporal
-            os.makedirs(temporal_path, exist_ok=True)  # Creamos la carpeta temporal
+            dbutils.fs.mkdirs(f"dbfs:{temporal_path}")  # Creamos la carpeta temporal
             zfile.extractall(
                 temporal_path, members=files
             )  # extraemos del ZIP solo el fichero que nos interesa
 
             # nombre del fichero csv :
-            file_path = os.path.join(
-                temporal_path, files[0].filename
-            )  # me guardo la ruta a dicho fichero
+            file_path = f"dbfs:/FileStore/tmp/{files[0].filename}" # me guardo la ruta a dicho fichero
             return file_path
         else:
             raise ConnectionError("Error conexión")
