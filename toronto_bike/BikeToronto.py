@@ -7,6 +7,7 @@ from .UrlToronto import UrlToronto
 
 class BikeToronto:
     def __init__(self, path_json):
+        self.spark = self.spark = SparkSession.getActiveSession()
         self.parametros = BikeToronto.loadParameters(path_json)
 
     @staticmethod
@@ -25,11 +26,13 @@ class BikeToronto:
         :param month: mes del que se quieren consultar los datos (MM)
         :return: DataFrame de Spark con los datos del mes y año que se quieren consultar
         """
-        urlToronto_obj = UrlToronto(self.parametros["temporal_path"])
-        path_csv = urlToronto_obj.download_csv(year, month)
+        temporal = self.parametros["temporal_path"]
+        downloader = UrlToronto(temporal)
+        path_csv = downloader.download_csv(year, month)
 
-        spark = SparkSession.builder.appName("BikeToronto").getOrCreate()
-        return spark.read.csv(
+        #path_csv = path_csv.replace('/dbfs/', 'dbfs:/')
+
+        return self.spark.read.csv(
             path_csv, sep=",", header=True, inferSchema=True, nullValue="NULL"
         )
 
