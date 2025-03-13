@@ -30,8 +30,6 @@ class BikeToronto:
         downloader = UrlToronto(temporal)
         path_csv = downloader.download_csv(year, month)
 
-        #path_csv = path_csv.replace('/dbfs/', 'dbfs:/')
-
         return self.spark.read.csv(
             path_csv, sep=",", header=True, inferSchema=True, nullValue="NULL"
         )
