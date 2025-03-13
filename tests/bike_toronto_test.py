@@ -3,12 +3,6 @@ from unittest.mock import patch, MagicMock
 from pyspark.sql import SparkSession
 from toronto_bike.BikeToronto import BikeToronto
 
-@pytest.fixture(scope="module")
-def spark():
-    return SparkSession.builder \
-        .appName("bike_toronto_test") \
-        .getOrCreate()
-
 @pytest.fixture
 def bike_toronto():
     with patch('toronto_bike.BikeToronto.BikeToronto.loadParameters') as mock_load_params:
